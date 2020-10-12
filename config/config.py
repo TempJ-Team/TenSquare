@@ -19,7 +19,7 @@ DB_HOST = '127.0.0.1'
 DB_PORT = '3306'
 DB_USER = 'root'
 DB_PASS = 'mysql'
-DB_NAME = 'ihome'
+DB_NAME = 'tensquare'
 
 # Redis数据库配置
 Redis_HOST = '127.0.0.1'
@@ -45,3 +45,9 @@ Qiniu_access_kEy = 'D7XBhwuX2Iw7RERpodL0H6obFg9EcLzD3hLalDcb'
 Qiniu_secret_kEy = 'lmwsIUKEHRckQJFKkIpZtZxzP3sy33AcfSIqvcZh'
 Qiniu_bucket_nAme = 'smartfox'
 Qiniu_rOOt_URL = 'http://kodo.smartfox.cc/'
+
+
+# ElasticsearchSearch
+ES_URL = 'http://192.168.203.153:9200/'
+ES_INDEX = 'tensquare'
+ES_PER_PAGE = 5

@@ -12,12 +12,12 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 import sys
+import datetime
 from config import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -39,6 +39,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'haystack',
+    'corsheaders',
+    'rest_framework',
+    'ckeditor',
+    'ckeditor_uploader',
+
+    'user.apps.UserConfig',  # 用户子应用
+    'question.apps.QuestionConfig',  # 问答子应用
+    'recruit.apps.RecruitConfig',  # 招聘子应用
+    'spit.apps.SpitConfig',  # 吐槽子应用
+    'gathering.apps.GatheringConfig',  # 活动子应用
+    'article.apps.ArticleConfig',  # 头条子应用
 ]
 
 MIDDLEWARE = [
@@ -77,7 +90,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'TenSquare.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -91,7 +103,6 @@ DATABASES = {
         'NAME': config.DB_NAME
     },
 }
-
 
 CACHES = {
     # 默认存储信息: 存到 0 号库
@@ -126,6 +137,14 @@ CACHES = {
     },
 }
 
+# 指明自定义的用户模型类
+AUTH_USER_MODEL = 'user.User'
+
+# 认证方法 进行登陆时校验的处理类
+AUTHENTICATION_BACKENDS = [
+    'user.utils.UsernameMobileAuthBackend',
+]
+
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "session"
 
@@ -147,7 +166,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -160,7 +178,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
@@ -217,3 +234,44 @@ QINIU_SECRET_KEY = config.Qiniu_secret_kEy
 QINIU_BUCKET_NAME = config.Qiniu_bucket_nAme
 QINIU_ROOT_URL = config.Qiniu_rOOt_URL
 QINIU_URL = 'http://oyucyko3w.bkt.clouddn.com/'
+
+# 富文本编辑器的配置
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',  # 工具条功能
+        'height': 300,  # 编辑器高度
+        # 'width': 300,  # 编辑器宽
+    },
+}
+CKEDITOR_UPLOAD_PATH = ''
+
+# jwt-token认证
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
+
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'users.utils.jwt_response_payload_handler',
+}
+
+# Haystack配置项
+HAYSTACK_CONNECTIONS = {
+    # 默认的es服务器链接
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': config.ES_URL,
+        'INDEX_NAME': config.ES_INDEX,
+    },
+}
+
+# 当被检索的数据被修改了，haystack就会把新的数据写入es索引库
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = config.ES_PER_PAGE
+
+
