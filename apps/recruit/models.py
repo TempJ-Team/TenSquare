@@ -5,7 +5,7 @@ from django.db import models
 # Create your models here.
 User = get_user_model()
 
-
+#企业详情
 class Enterprise(models.Model):
     name = models.CharField(max_length=100, null=True,default=None, verbose_name="企业名称")
     summary = models.CharField(max_length=1000, null=True,default=None, verbose_name="企业简介")
@@ -27,7 +27,7 @@ class Enterprise(models.Model):
     def __str__(self):
         return self.name
 
-
+#职位
 class Recruit(models.Model):
     STATE_CHOICES = (
         (0, "不可用"),
@@ -57,7 +57,7 @@ class Recruit(models.Model):
     def __str__(self):
         return self.enterprise.name + "_" + self.jobname
 
-
+#城市
 class City(models.Model):
     HOT_CHOICES = (
         (0, "不是热门"),
