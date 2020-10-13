@@ -48,11 +48,17 @@ INSTALLED_APPS = [
 
     'user.apps.UserConfig',  # 用户子应用
     'question.apps.QuestionConfig',  # 问答子应用
-    'recruit.apps.RecruitConfig',  # 招聘子应用
+<<<<<<< Updated upstream
+    'apps.recruit',  # 招聘子应用
     'spit.apps.SpitConfig',  # 吐槽子应用
+=======
+    'recruit.apps.RecruitConfig',  # 招聘子应用
+    'apps.spit',  # 吐槽子应用
+>>>>>>> Stashed changes
     'gathering.apps.GatheringConfig',  # 活动子应用
-    'article.apps.ArticleConfig',  # 头条子应用
+    'apps.article',  # 头条子应用
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -68,7 +74,7 @@ MIDDLEWARE = [
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = ('http://127.0.0.1:8080', 'http://127.0.0.1:8000', 'http://www.meiduo.site:8080',)
+CORS_ORIGIN_WHITELIST = ('http://127.0.0.1:8080',)
 
 ROOT_URLCONF = 'TenSquare.urls'
 
@@ -254,9 +260,10 @@ REST_FRAMEWORK = {
     ),
 }
 
+# JWT状态保持配置
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
-    'JWT_RESPONSE_PAYLOAD_HANDLER': 'users.utils.jwt_response_payload_handler',
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'utils.CustomJWT.jwt_response_payload_handler',
 }
 
 # Haystack配置项

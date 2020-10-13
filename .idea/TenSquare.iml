@@ -16,7 +16,11 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/apps" isTestSource="false" />
     </content>
-    <orderEntry type="inheritedJdk" />
+<<<<<<< Updated upstream
+    <orderEntry type="jdk" jdkName="Remote Python 3.5.2 (sftp://python@192.168.203.153:22/home/python/.virtualenvs/django_env/bin/python)" jdkType="Python SDK" />
+=======
+    <orderEntry type="jdk" jdkName="Remote Python 3.5.2 (sftp://python@192.168.203.153:2222/home/python/.virtualenvs/django_env/bin/python)" jdkType="Python SDK" />
+>>>>>>> Stashed changes
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TemplatesService">

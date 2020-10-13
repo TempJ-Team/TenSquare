@@ -1,11 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="root@192.168.203.153:22 key" remoteFilesAllowedToDisappearOnAutoupload="false" autoUploadExternalChanges="true">
+  <component name="PublishConfigData" autoUpload="Always" remoteFilesAllowedToDisappearOnAutoupload="false" autoUploadExternalChanges="true">
     <serverData>
-      <paths name="root@192.168.203.153:22 key">
+<<<<<<< Updated upstream
+      <paths name="python@192.168.203.153:22 password">
         <serverdata>
           <mappings>
-            <mapping deploy="/tmp/pycharm_project_772" local="$PROJECT_DIR$" />
+            <mapping deploy="/home/python/tensquare" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="python@192.168.203.153:22 password (1)">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="root@192.168.203.153:22 password">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+=======
+      <paths name="python@192.168.203.153:2222 password">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/python/Desktop/TenSquare" local="$PROJECT_DIR$" web="/" />
+>>>>>>> Stashed changes
           </mappings>
         </serverdata>
       </paths>
