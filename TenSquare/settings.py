@@ -69,7 +69,7 @@ MIDDLEWARE = [
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = ('http://127.0.0.1:8080', 'http://127.0.0.1:8000', 'http://www.meiduo.site:8080',)
+CORS_ORIGIN_WHITELIST = ('http://127.0.0.1:8080',)
 
 ROOT_URLCONF = 'TenSquare.urls'
 
@@ -255,6 +255,7 @@ REST_FRAMEWORK = {
     ),
 }
 
+# JWT状态保持配置
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
     'JWT_RESPONSE_PAYLOAD_HANDLER': 'utils.CustomJWT.jwt_response_payload_handler',
