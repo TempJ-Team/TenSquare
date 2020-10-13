@@ -2,11 +2,24 @@
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
 <<<<<<< HEAD
+<<<<<<< HEAD
     <data-source source="LOCAL" name="tensquare@192.168.203.153" uuid="76b65034-d2c7-4402-89b1-ad8feb26553a">
+=======
+<<<<<<< Updated upstream
+<<<<<<< HEAD
+    <data-source source="LOCAL" name="tensquare@192.168.203.153" uuid="76b65034-d2c7-4402-89b1-ad8feb26553a">
+=======
+    <data-source source="LOCAL" name="tensquare" uuid="02c43e01-bffb-45c6-8f82-b9baebfb0c16">
+>>>>>>> Stashed changes
+>>>>>>> zhuge
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://192.168.203.153:3306/tensquare</jdbc-url>
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+>>>>>>> zhuge
 =======
     <data-source source="LOCAL" name="tensquare@192.168.203.153" uuid="d588fb89-cf24-4c93-92df-4cc9cc0e30e6">
       <driver-ref>mysql</driver-ref>
@@ -22,6 +35,11 @@
         <property name="yearIsDateType" value="false" />
       </driver-properties>
 >>>>>>> sanbai
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> Stashed changes
+>>>>>>> zhuge
     </data-source>
   </component>
 </project>

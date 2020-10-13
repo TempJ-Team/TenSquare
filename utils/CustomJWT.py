@@ -9,7 +9,17 @@ def jwt_response_payload_handler(token, user=None, request=None):
         'mobile': user.mobile,
         'avatar': user.avatar
 <<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+>>>>>>> zhuge
+<<<<<<< HEAD
     }
 =======
     }
 >>>>>>> sanbai
+<<<<<<< HEAD
+=======
+=======
+    }
+>>>>>>> Stashed changes
+>>>>>>> zhuge
