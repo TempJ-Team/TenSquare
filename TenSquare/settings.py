@@ -51,8 +51,9 @@ INSTALLED_APPS = [
     'recruit.apps.RecruitConfig',  # 招聘子应用
     'spit.apps.SpitConfig',  # 吐槽子应用
     'gathering.apps.GatheringConfig',  # 活动子应用
-    'article.apps.ArticleConfig',  # 头条子应用
+    'apps.article',  # 头条子应用
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
