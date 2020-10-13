@@ -10,8 +10,11 @@ https://docs.djangoproject.com/en/2.2/howto/deployment/wsgi/
 import os
 from multiprocessing import Process
 from django.core.wsgi import get_wsgi_application
+from config.config import ENV
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TenSquare.settings')
+
+application = get_wsgi_application()
 
 
 def check_migrate() -> None:
@@ -28,9 +31,11 @@ def redis_server() -> None:
 
 
 def sms_server() -> None:
-    # cmd = 'cd .. && /root/.virtualenvs/MyMeiduoMall/bin/celery -A utils.celery_tasks.main worker -l info'
-    # # cmd = 'source /root/.bashrc && workon MyMeiduomMall'
+    # cmd = 'bash workon MyMeiduoMall'
     # os.system(cmd)
+    # cmd = 'cd .. && /root/.virtualenvs/MyMeiduoMall/bin/celery -A utils.celery_tasks.main worker -l info'
+    cmd = "bash -c 'source /root/.bashrc && source /usr/local/bin/virtualenvwrapper.sh && workon " + ENV +" && cd .. && celery -A utils.celery_tasks.main worker -l info'"
+    os.system(cmd)
     pass
 
 
@@ -52,5 +57,3 @@ def run_task() -> None:
 
 
 run_task()
-
-application = get_wsgi_application()
