@@ -1,6 +1,12 @@
 # DEBUG
 DEBUG = True
 
+# 运行虚拟环境名
+if DEBUG:
+    ENV = 'MyMeiduoMall'
+else:
+    ENV = 'django_env'
+
 
 # 密钥
 SECRET_KEY = '*x@4+k$_3qd%55+=nvuv&w*%$u=j2l!)#*&x5)3+1vsm(*_0b^'
