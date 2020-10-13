@@ -48,7 +48,7 @@ INSTALLED_APPS = [
 
     'user.apps.UserConfig',  # 用户子应用
     'question.apps.QuestionConfig',  # 问答子应用
-    'recruit.apps.RecruitConfig',  # 招聘子应用
+    'apps.recruit',  # 招聘子应用
     'spit.apps.SpitConfig',  # 吐槽子应用
     'gathering.apps.GatheringConfig',  # 活动子应用
     'apps.article',  # 头条子应用
