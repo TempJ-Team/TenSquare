@@ -6,7 +6,7 @@ import os
 # os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ihome.settings')
 
 # 注册异步任务app
-celery_app = Celery('ihome')
+celery_app = Celery('tensquare')
 
 # 加载配置文件
 celery_app.config_from_object('utils.celery_tasks.config')
