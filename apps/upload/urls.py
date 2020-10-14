@@ -3,5 +3,5 @@ from . import views
 
 urlpatterns = [
     path('common/', views.RichEditorImageUpload.as_view()),
-    #    path('admin/', admin.site.urls),
+    path('avatar/', views.AvatarImageUpload.as_view()),
 ]
