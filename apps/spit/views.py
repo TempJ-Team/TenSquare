@@ -39,6 +39,7 @@ class SpitSimpleView(ModelViewSet):
     #         return self.queryset.filter(id=keyword)
     #     return self.queryset.all()
 
+
     def create(self, request, *args, **kwargs):
         user = self.request.user
         _data = request.data
