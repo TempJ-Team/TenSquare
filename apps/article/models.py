@@ -3,7 +3,7 @@ from django.contrib.auth.backends import get_user_model
 from django.db import models
 
 # Create your models here.
-from question.models import Label
+from apps.question.models import Label
 
 User = get_user_model()
 
