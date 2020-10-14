@@ -21,6 +21,7 @@ class SpitSimpleView(ModelViewSet):
             return self.queryset.filter(order_id__contains=keyword)
         return self.queryset.all()
 
+
     def create(self, request, *args, **kwargs):
         user = self.request.user
         _data = request.data
