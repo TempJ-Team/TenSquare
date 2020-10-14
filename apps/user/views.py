@@ -8,7 +8,7 @@ from random import randint
 from django_redis import get_redis_connection
 
 from rest_framework.viewsets import ModelViewSet,mixins
-from user.serializers import *
+from .serializers import *
 from rest_framework.generics import GenericAPIView,RetrieveUpdateAPIView
 from rest_framework_jwt.utils import jwt_encode_handler, jwt_payload_handler
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
