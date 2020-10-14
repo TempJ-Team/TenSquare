@@ -8,4 +8,5 @@ urlpatterns = [
     re_path('', include(('apps.spit.urls'))),
 
     path('gatherings/',include('apps.gathering.urls')),
+    path('',include('apps.question.urls')),
 ]
