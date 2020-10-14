@@ -20,6 +20,18 @@ class SpitSimpleView(ModelViewSet):
     serializer_class = SpitSimpleSerializer
     authentication_classes = (JSONWebTokenAuthentication,)
     pagination_class = MyPage
+    def list(self, request, *args, **kwargs):
+        queryset = Spit.objects.filter(parent__id=None).all()
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    
 
     # def get_queryset(self):
     #     keyword = self.request.query_params.get('id')
@@ -96,6 +108,6 @@ class SpitCommentView(RetrieveAPIView):
 
     def retrieve(self, request, pk, *args, **kwargs):
         # instance = self.get_object()
-        queryset = Spit.objects.filter(parent__in=pk).all()
+        queryset = Spit.objects.filter(parent__id=pk).all()
         serializer = self.get_serializer(instance=queryset,many=True)
         return Response(serializer.data)
