@@ -1,17 +1,17 @@
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.response import Response
+
 from utils.celery_tasks.sms.tasks import send_sms_code
 import re
 from random import randint
 from django_redis import get_redis_connection
 
-from rest_framework.viewsets import ModelViewSet,mixins
-from .serializers import *
+from .serializers import UserModelSerializer, User, ChangePasswordModelSerializer, UserInfoSerializer
+
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import GenericAPIView,RetrieveUpdateAPIView
 from rest_framework_jwt.utils import jwt_encode_handler, jwt_payload_handler
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.generics import UpdateAPIView
 
 
@@ -103,6 +103,46 @@ class ChangePasswordView(UpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+# 关注用户/取消关注
+class FocusUserView(GenericAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserModelSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'id'
+    lookup_url_kwarg = lookup_field
+
+    def post(self, request, id):
+        user = self.request.user
+        idol_user = self.get_object()
+
+        try:
+            user.idols.add(idol_user)
+            # idol_user.fans.add(user)  # 这两个随便选择一个操作即可
+        except Exception as e:
+            return Response(data='关注用户失败', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response({
+                'success': 'true',
+                'message': '关注用户成功'
+            })
+
+    def delete(self):
+        user = self.request.user
+        idol_user = self.get_object()
+
+        try:
+            user.idols.remove(idol_user)
+            # idol_user.fans.add(user)  # 这两个随便选择一个操作即可
+        except Exception as e:
+            return Response(data='取消关注用户失败', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response({
+                'success': 'true',
+                'message': '取消关注用户成功'
+            })
+
 
 
 

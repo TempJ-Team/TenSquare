@@ -4,7 +4,7 @@ Version:
 Author: SmartFox97
 Date: 2020-10-14 00:46:57
 LastEditors: SmartFox97
-LastEditTime: 2020-10-15 01:35:34
+LastEditTime: 2020-10-15 01:38:52
 '''
 from rest_framework import serializers
 from .models import *

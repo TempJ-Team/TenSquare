@@ -17,27 +17,49 @@ class RecruitModelSerialier(serializers.ModelSerializer):
         fields = '__all__'
 
 # 7.1.1(enterprise = models.ForeignKey)调用
+# 7.9,,7.10,,7.11使用的都是该序列化器
 class EnterpriseModelSerializer(serializers.ModelSerializer):
-    recruits = RecruitModelSerialier(many=True)
+    recruits = RecruitModelSerialier(many=True, required=False)
+
     class Meta:
         model = Enterprise
         fields = '__all__'
-
+        extra_kwargs = {
+            'users': {
+                'allow_empty': True,
+                'required': False
+            }
+        }
 
 #7.1推荐职位(序列化器1）
 class Recommend_RecruitModelSerializer(serializers.ModelSerializer):
     enterprise = EnterpriseModelSerializer()
     class Meta:
         model = Recruit
-        fields =['id','jobname','salary','condition','education','type',
+        fields = ['id','jobname','salary','condition','education','type',
                 'city','createtime','enterprise','labels']
-
 
 # 热门城市7.4
 class Hot_CityModelSerialier(serializers.ModelSerializer):
     class Meta:
         model = City
         fields = '__all__'
+
+
+# 最新职位/搜索职位
+class LastestRecruitModelSerializer(serializers.ModelSerializer):
+    enterprise = EnterpriseModelSerializer()
+
+    class Meta:
+        model = Recruit
+        fields = '__all__'
+
+
+
+
+
+
+
 
 
 
