@@ -14,3 +14,9 @@ class QuestionsModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
         fields = '__all__'
+
+# 回答问题
+class ReplyModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reply
+        fields = '__all__'

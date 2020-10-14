@@ -15,4 +15,6 @@ urlpatterns = [
     path('user/', views.UserInfoView.as_view()),
     # 修改密码
     path('user/password/', views.ChangePasswordView.as_view()),
+    # 关注/取消关注
+    re_path(r'^users/like/?P<id>\d+/$', views.FocusUserView.as_view()),
 ]
