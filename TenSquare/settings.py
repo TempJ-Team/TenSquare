@@ -144,7 +144,7 @@ AUTH_USER_MODEL = 'user.User'
 
 # 认证方法 进行登陆时校验的处理类
 AUTHENTICATION_BACKENDS = [
-    'user.utils.UsernameMobileAuthBackend',
+    'apps.user.utils.UsernameMobileAuthBackend',
 ]
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"

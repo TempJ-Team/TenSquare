@@ -17,8 +17,8 @@ class Spit(models.Model):
     comment = models.IntegerField(default=0)  # 回复数
     avatar = models.CharField(max_length=255, null=True)  # 用户的头像
     parent = models.ForeignKey("Spit", on_delete=models.CASCADE, null=True)  # 上级ID
-    # collected = models.BooleanField(default=False)  # 是否收藏
-    # hasthumbup = models.BooleanField(default=False)  # 是否点赞
+    collected = models.BooleanField(default=False)  # 是否收藏
+    hasthumbup = models.BooleanField(default=False)  # 是否点赞
     collected_users = models.ManyToManyField(User, symmetrical=False, related_name='collected_users', verbose_name="收藏者")
     hasthumbup_users = models.ManyToManyField(User, symmetrical=False, related_name='hasthumbup_users', verbose_name="点赞者")
 

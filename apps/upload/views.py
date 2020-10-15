@@ -21,7 +21,7 @@ class RichEditorImageUpload(APIView):
                 }, status=status.HTTP_400_BAD_REQUEST)
 
         image_url = imAge_upload(_img)
-        callback = '127.0.0.1:8080'
+        callback = 'note.java.itcast.cn'
         if image_url:
             return redirect('http://'+callback+'/upload_success.html?image_url='+image_url+'&CKEditorFuncNum=1')
         return Response({

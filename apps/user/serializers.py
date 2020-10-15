@@ -7,6 +7,7 @@ from apps.recruit.serializers import RecruitModelSerialier, EnterpriseModelSeria
 
 # 用户注册
 class UserModelSerializer(serializers.ModelSerializer):
+    fans = serializers.PrimaryKeyRelatedField(many=True, read_only=True, allow_null=True)
 
     class Meta:
         model = User

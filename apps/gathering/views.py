@@ -4,12 +4,14 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .models import Gathering
 from .serializer import GatheringsSerializer, GatherSerializerSimple
+from utils.paginations import MyPage
 
 
 # 获取所有活动
 class Gatherings(ListAPIView):
     queryset = Gathering.objects.filter(state=1)
     serializer_class = GatherSerializerSimple
+    pagination_class = MyPage
 
 
 # 获取某个活动详情
@@ -23,7 +25,7 @@ class GatherJoinView(GenericAPIView):
     queryset = Gathering.objects.filter(state=1)
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, pk):
+    def post(self, request, pk):
         user = request.user
         # 返回详情视图所需的模型类数据对象
         gathering = self.get_object()

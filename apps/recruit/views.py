@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.generics import ListAPIView,CreateAPIView,UpdateAPIView, GenericAPIView
+from rest_framework.generics import ListAPIView,CreateAPIView,UpdateAPIView, GenericAPIView,RetrieveAPIView
 from rest_framework import generics
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
@@ -140,20 +140,6 @@ class CancleCollection_RecruitView(GenericAPIView):
             'message':'取消收藏成功',
             'success':True
         })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # 热门企业
 class HotCompanyView(ListAPIView):
     queryset = Enterprise.objects.all()
