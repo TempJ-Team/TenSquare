@@ -48,21 +48,21 @@ class SpitSimpleView(ModelViewSet):
             parent.comment += 1
             parent.save()
 
-    @action(methods=['put'], detail=True)
-    def updatehastumbup(self, request,id):
-        spit = Spit.objects.get(pk=id)
-        if spit.hasthumbup==True:
-            spit.hasthumbup = False
-            spit.thumbup += 1
-            spit.save()
-        else:
-            spit.hasthumbup = True
-            spit.thumbup -= 1
-            spit.save()
-        return Response({
-            'message':'ok',
-            'success':'spit.hasthumbup'
-        })
+    # @action(methods=['put'], detail=True)
+    # def updatehastumbup(self, request,id):
+    #     spit = Spit.objects.get(pk=id)
+    #     if spit.hasthumbup==True:
+    #         spit.hasthumbup = False
+    #         spit.thumbup += 1
+    #         spit.save()
+    #     else:
+    #         spit.hasthumbup = True
+    #         spit.thumbup -= 1
+    #         spit.save()
+    #     return Response({
+    #         'message':'ok',
+    #         'success':'spit.hasthumbup'
+    #     })
 
 
 class SpitCollectedView(UpdateAPIView):
@@ -75,17 +75,47 @@ class SpitCollectedView(UpdateAPIView):
 
         if user not in spit.collected_users.all():
             spit.collected_users.add(user)
+            spit.collected = True
+            spit.save()
             return Response({
                 'message': '收藏成功',
                 'success': True
             })
         else:
             spit.collected_users.remove(user)
+            spit.collected = False
+            spit.save()
             return Response({
                 'message': '取消收藏成功',
                 'success': True
             })
 
+class SpitHasthumbupView(UpdateAPIView):
+    queryset = Spit.objects.all()
+    serializer_class = SpithasthumbupSerializer
+
+    def put(self, request, pk, *args, **kwargs):
+        user = self.request.user
+        spit = Spit.objects.get(pk=pk)
+
+        if user not in spit.collected_users.all():
+            spit.hasthumbup_users.add(user)
+            spit.hasthumbup = True
+            spit.thumbup += 1
+            spit.save()
+            return Response({
+                'message': '收藏成功',
+                'success': True
+            })
+        else:
+            spit.hasthumbup_users.remove(user)
+            spit.hasthumbup = False
+            spit.thumbup -= 1
+            spit.save()
+            return Response({
+                'message': '取消收藏成功',
+                'success': True
+            })
     #
     # @action(methods=['put'],detail=True)
     # def collect(self,request,id):
