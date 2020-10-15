@@ -10,8 +10,8 @@ from rest_framework.generics import ListCreateAPIView, ListAPIView, UpdateAPIVie
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
-from .models import *
-from .serializers import *
+from question.models import *
+from question.serializers import *
 
 
 
@@ -29,17 +29,17 @@ class LabelView(ModelViewSet):
 
 #3
 class QuestionView(ListAPIView):
-    queryset = Question.objects.all()
+    queryset = Question.objects.all().order_by('-createtime')
     serializer_class = QusetionModelSerializer
 
 # 4
 class HotquestionView(ListAPIView):
-    queryset = Question.objects.all()
+    queryset = Question.objects.all().order_by('-reply')
     serializer_class = LabelHotModelSerializer
 
 #5
 class WiatquestionView(ListAPIView):
-    queryset = Question.objects.all()
+    queryset = Question.objects.all().filter(reply=0).order_by('createtime')
     serializer_class = LabelHotModelSerializer
 
 #6
@@ -130,7 +130,35 @@ class ReplyView(ListCreateAPIView):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
+#11
+class UsefulQView(GenericAPIView):
+    queryset = Reply.objects.all()
+    serializer_class = ReplySerializer
 
+    def put(self, request, pk, *args, **kwargs):
+        user = self.request.user
+        request_data = self.get_queryset().get(pk=pk)
+        request_data.useful_count += 1
+        request_data.save()
+        return Response({
+                'success': True,
+                'message': '有用问题+1'
+            })
+
+#12
+class UnusefulQView(GenericAPIView):
+    queryset = Reply.objects.all()
+    serializer_class = ReplySerializer
+
+    def put(self, request, pk, *args, **kwargs):
+        user = self.request.user
+        request_data = self.get_queryset().get(pk=pk)
+        request_data.useful_count -= 1
+        request_data.save()
+        return Response({
+                'success': True,
+                'message': '没用问题+1'
+            })
 
 
 #13 关注标签
@@ -170,6 +198,24 @@ class AttentiontagsView(GenericAPIView):
             'success':'true',
             'message':'取消关注成功'
         })
+
+#15
+class TagsView(ModelViewSet):
+    queryset = Label.objects.all()
+    serializer_class = TagsDetailsSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+#16
+class LabelFullView(ListAPIView):
+
+    def get(self, request):
+        labels = Label.objects.all()
+        serializer = LabelAllModelSerializer(labels, many=True)
+        return Response(serializer.data)
 
 
 

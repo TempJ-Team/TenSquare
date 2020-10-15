@@ -1,27 +1,5 @@
-'''
-Descripition: 
-Version: 
-Author: SmartFox97
-Date: 2020-10-14 00:46:57
-LastEditors: SmartFox97
-LastEditTime: 2020-10-15 01:38:52
-'''
 from rest_framework import serializers
 from .models import *
-
-
-# 个人提问
-class LablesModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Label
-        fields = '__all__'
-
-class QuestionsModelSerializer(serializers.ModelSerializer):
-    lables = LablesModelSerializer(many=True)
-
-    class Meta:
-        model = Question
-        fields = '__all__'
 #所有标签
 class  LabelAllModelSerializer(serializers.ModelSerializer):
     class Meta:
@@ -98,3 +76,22 @@ class ReplyQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reply
         fields = ['problem','content','type','parent','user']
+
+class ReplySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reply
+        fields = '__all__'
+
+#标签详情
+class QuestionSerializerforTagsDetails(serializers.ModelSerializer):
+    labels = serializers.StringRelatedField(many=True)
+
+    class Meta:
+        model = Question
+        fields = '__all__'
+
+class TagsDetailsSerializer(serializers.ModelSerializer):
+    questions = QuestionSerializerforTagsDetails(many=True)
+    class Meta:
+        model = Label
+        fields = '__all__'
