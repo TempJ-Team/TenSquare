@@ -1,8 +1,10 @@
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 from .models import *
+
 from apps.question.serializers import LablesModelSerializer, QuestionsModelSerializer, ReplySerializerForList
 from apps.recruit.serializers import RecruitModelSerialier, EnterpriseModelSerializer
+from apps.article.models import Article
 
 
 # 用户注册
@@ -22,6 +24,11 @@ class UserModelSerializer(serializers.ModelSerializer):
         return attrs
 
 
+class ArticleDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        fields = '__all__'
+
 # 用户个人中心
 class UserInfoSerializer(serializers.ModelSerializer):
     '''用户信息'''
@@ -33,7 +40,7 @@ class UserInfoSerializer(serializers.ModelSerializer):
     replies = ReplySerializerForList(many=True, read_only=True)
     labels = LablesModelSerializer(many=True, read_only=True)
     # ==> artical
-    collected_articles = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    collected_articles = ArticleDetailSerializer(many=True, read_only=True)
     # ==> recruit
     enterpises = EnterpriseModelSerializer(many=True, read_only=True)
     recruits = RecruitModelSerialier(many=True, read_only=True)

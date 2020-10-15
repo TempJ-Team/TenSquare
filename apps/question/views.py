@@ -6,12 +6,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.generics import ListCreateAPIView, ListAPIView, UpdateAPIView,GenericAPIView
-from rest_framework.views import APIView
+from rest_framework.generics import ListCreateAPIView, ListAPIView,GenericAPIView
 from rest_framework.viewsets import ModelViewSet
-
-from .models import *
 from .serializers import *
+from django_redis import get_redis_connection
 
 
 
@@ -90,14 +88,22 @@ class UsefulQuestionView(GenericAPIView):
     serializer_class = QusetionModelSerializer
 
     def put(self, request, pk, *args, **kwargs):
+        conn = get_redis_connection('Q_collected')
         user = self.request.user
-        request_data = self.get_queryset().get(pk=pk)
-        request_data.useful_count = request_data.useful_count + 1
-        request_data.save()
-        return Response({
-            'success': True,
-            'message': '有用问题+1'
-        })
+        U_Q_collected = conn.get('Q_collected_%s' % user.id)
+        if pk not in U_Q_collected:
+            request_data = self.get_queryset().get(pk=pk)
+            request_data.useful_count = request_data.useful_count + 1
+            request_data.save()
+            return Response({
+                'success': True,
+                'message': '有用问题+1'
+            })
+        else:
+            return Response({
+                'success': False,
+                'message':'请勿重复点赞'
+            })
 
 #9
 class UnusefulQuestionView(GenericAPIView):
@@ -105,6 +111,7 @@ class UnusefulQuestionView(GenericAPIView):
     serializer_class = QusetionModelSerializer
 
     def put(self, request, pk, *args, **kwargs):
+        conn = get_redis_connection('Q_collected')
         user = self.request.user
         request_data = self.get_queryset().get(pk=pk)
         request_data.useful_count = request_data.useful_count - 1
@@ -136,6 +143,7 @@ class UsefulQView(GenericAPIView):
     serializer_class = ReplySerializer
 
     def put(self, request, pk, *args, **kwargs):
+        conn = get_redis_connection('A_collected')
         user = self.request.user
         request_data = self.get_queryset().get(pk=pk)
         request_data.useful_count += 1
@@ -151,6 +159,7 @@ class UnusefulQView(GenericAPIView):
     serializer_class = ReplySerializer
 
     def put(self, request, pk, *args, **kwargs):
+        conn = get_redis_connection('A_collected')
         user = self.request.user
         request_data = self.get_queryset().get(pk=pk)
         request_data.useful_count -= 1

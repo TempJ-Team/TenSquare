@@ -8,7 +8,7 @@ class LablesModelSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class QuestionsModelSerializer(serializers.ModelSerializer):
-    lables = LablesModelSerializer(many=True)
+    labels = LablesModelSerializer(many=True)
 
     class Meta:
         model = Question

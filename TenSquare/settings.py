@@ -55,7 +55,6 @@ INSTALLED_APPS = [
     'apps.article',  # 头条子应用
 ]
 
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -77,7 +76,7 @@ ROOT_URLCONF = 'TenSquare.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -130,9 +129,16 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
-    "add_order": {
+    "Q_collected": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://" + config.Redis_HOST + ':' + config.Redis_PORT + "/3",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    "A_collected": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://" + config.Redis_HOST + ':' + config.Redis_PORT + "/4",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -275,8 +281,6 @@ HAYSTACK_CONNECTIONS = {
 }
 
 # 当被检索的数据被修改了，haystack就会把新的数据写入es索引库
-HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+# HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
-HAYSTACK_SEARCH_RESULTS_PER_PAGE = config.ES_PER_PAGE
-
-
+# HAYSTACK_SEARCH_RESULTS_PER_PAGE = config.ES_PER_PAGE
