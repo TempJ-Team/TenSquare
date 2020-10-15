@@ -16,6 +16,7 @@ class RichEditorImageUpload(APIView):
         if _img:
             ext = _img.name.split('.')[-1]
             if ext not in eXt_List:
+                print(ext)
                 return Response({
                     'msg': '文件类型不允许！'
                 }, status=status.HTTP_400_BAD_REQUEST)

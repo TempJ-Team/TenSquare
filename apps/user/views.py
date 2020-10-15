@@ -1,20 +1,20 @@
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
-
 from utils.celery_tasks.sms.tasks import send_sms_code
 import re
+import requests
+import json
 from random import randint
 from django_redis import get_redis_connection
-
-from .serializers import UserModelSerializer, User, ChangePasswordModelSerializer, UserInfoSerializer, ChangeLabelModelSerializer
-
+from .serializers import UserModelSerializer, User, ChangePasswordModelSerializer, UserInfoSerializer, \
+    ChangeLabelModelSerializer
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.generics import GenericAPIView,RetrieveUpdateAPIView
+from rest_framework.generics import GenericAPIView, RetrieveUpdateAPIView
 from rest_framework_jwt.serializers import jwt_encode_handler, jwt_payload_handler
 from rest_framework.generics import UpdateAPIView
+from .models import OAuthWeixinUser
 
-from apps.question.models import Label
 
 # 获取短信验证码
 class SendSmscodeView(APIView):
@@ -79,7 +79,7 @@ class UserView(GenericAPIView):
 
         return Response({
             'id': user.id,
-            'username': user.username,
+            'username': user.nickname,
             'mobile': user.mobile,
             'avatar': user.avatar,
             'token': token
@@ -166,34 +166,59 @@ class ChangeUserLabelView(GenericAPIView):
         })
 
 
-# 第三方登录--qq
+# 第三方登录--Wechat
 
+class WeChatLoginViewSet(APIView):
 
+    def get(self, request):
+        code = request.query_params.get('code')
+        appid = 'wx3bdb1192c22883f3'
+        secret = 'db9d6b88821df403e5ff11742e799105'
 
+        url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + appid + "&secret=" + secret + "&code=" + code + "&grant_type=authorization_code"
 
+        wx_result = requests.get(url)
 
+        response = json.loads(wx_result.content.decode())
 
+        if 'errcode' in response:
+            # 有错误码
+            data = {}
+            data['code'] = response['errcode']
+            data['message'] = response['errmsg']
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
+        openid = response['openid'] if 'openid' in response else None
+        access_token = response["access_token"] if 'access_token' in response else None
+        # session_key = response['session_key'] if 'session_key' in response else None
 
+        try:
+            _data = OAuthWeixinUser.objects.get(openid=openid)
+            user = _data.user
+        except:
+            # 用户未注册过
+            infoUrl = "https://api.weixin.qq.com/sns/userinfo?access_token=" + access_token + "&openid=" + openid
+            userInfo = json.loads(requests.get(infoUrl).content.decode('utf8'))
 
+            user = User.objects.create(
+                username=userInfo['nickname'],
+                nickname=userInfo['nickname'],
+                avatar=userInfo['headimgurl'],
+                city=userInfo['city'],
+                sex=userInfo['sex'],
+            )
+            user.set_password(userInfo['openid'])
+            OAuthWeixinUser.objects.create(
+                user=user,
+                openid=openid
+            )
 
+        payload = jwt_payload_handler(user)
+        token = jwt_encode_handler(payload)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return Response({
+            'token': token,
+            'user_id': user.id,
+            'avatar': user.avatar,
+            'username': user.nickname,
+        })

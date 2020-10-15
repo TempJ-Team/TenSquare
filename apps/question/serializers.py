@@ -1,5 +1,8 @@
 from rest_framework import serializers
 from .models import *
+from apps.article.models import Article
+from apps.recruit.models import Recruit
+from apps.recruit.serializers import EnterpriseModelSerializer
 
 # 个人提问
 class LablesModelSerializer(serializers.ModelSerializer):
@@ -103,8 +106,22 @@ class QuestionSerializerforTagsDetails(serializers.ModelSerializer):
         model = Question
         fields = '__all__'
 
+class ArticleModelSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Article
+        fields = '__all__'
+
+class RecruitModelSerialier(serializers.ModelSerializer):
+    enterprise = EnterpriseModelSerializer()
+    class Meta:
+        model = Recruit
+        fields = '__all__'
+
 class TagsDetailsSerializer(serializers.ModelSerializer):
     questions = QuestionSerializerforTagsDetails(many=True)
+    articles = ArticleModelSerializer(many=True)
+    labelRecruits = RecruitModelSerialier(many=True)
     class Meta:
         model = Label
         fields = '__all__'

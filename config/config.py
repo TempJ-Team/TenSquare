@@ -7,7 +7,7 @@ if DEBUG:
 else:
     ENV = 'django_env'
 
-eXt_List = ['jpg', 'png', 'PNG']
+eXt_List = ['jpg', 'png', 'PNG', 'GIF', 'JPG', 'gif']
 
 # 密钥
 SECRET_KEY = '*x@4+k$_3qd%55+=nvuv&w*%$u=j2l!)#*&x5)3+1vsm(*_0b^'
@@ -19,7 +19,7 @@ ALLOWED_HOSTS = ['*']
 
 # 语言设置项
 LANGUAGE_CODE = 'zh-hans'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 # 数据库配置
 DB_HOST = '127.0.0.1'

@@ -19,4 +19,5 @@ urlpatterns = [
     re_path(r'^users/like/?P<id>\d+/$', views.FocusUserView.as_view()),
     # 修改个人标签
     path('user/label/', views.ChangeUserLabelView.as_view()),
+    path('weixin/user/', views.WeChatLoginViewSet.as_view()),
 ]

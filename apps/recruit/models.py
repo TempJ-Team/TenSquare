@@ -1,6 +1,7 @@
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.contrib.auth.backends import get_user_model
 from django.db import models
+from apps.question.models import Label
 
 # Create your models here.
 User = get_user_model()
@@ -46,6 +47,7 @@ class Recruit(models.Model):
     detailrequire = RichTextUploadingField(default='', verbose_name='职位要求')
     visits = models.BigIntegerField(null=True, default=0, verbose_name="浏览量")
     createtime = models.DateTimeField(null=True, auto_now_add=True, verbose_name="创建日期")
+    tags = models.ManyToManyField(Label, symmetrical=False, related_name='labelRecruits', verbose_name="职位标签")
     enterprise = models.ForeignKey(Enterprise,on_delete=models.CASCADE, related_name="recruits", null=True, default=None, verbose_name="企业ID")
     users = models.ManyToManyField(User, symmetrical=False, related_name='retruits', verbose_name="收藏者")
 

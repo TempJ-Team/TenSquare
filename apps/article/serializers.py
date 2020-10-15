@@ -4,6 +4,7 @@ from apps.user.serializers import UserModelSerializer
 from rest_framework.relations import PrimaryKeyRelatedField, StringRelatedField
 from drf_haystack.serializers import HaystackSerializer
 from .search_indexes import ArticleIndex
+from apps.user.serializers import UserModelSerializer
 from haystack.views import search_view_factory
 
 
@@ -50,6 +51,7 @@ class RecursiveCommentField(serializers.Serializer):
 
 class CommentModelSerializer(serializers.ModelSerializer):
     subs = RecursiveCommentField(many=True, read_only=True)
+    user = UserModelSerializer(read_only=True)
 
     class Meta:
         model = Comment

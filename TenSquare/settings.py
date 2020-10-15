@@ -101,7 +101,8 @@ DATABASES = {
         'PORT': config.DB_PORT,
         'USER': config.DB_USER,
         'PASSWORD': config.DB_PASS,
-        'NAME': config.DB_NAME
+        'NAME': config.DB_NAME,
+        'OPTIONS': {'charset': 'utf8mb4'},
     },
 }
 
@@ -284,6 +285,5 @@ DEFAULT_FILE_STORAGE = 'utils.fdfs.FastDFSStorage'
 
 # 当添加、修改、删除数据时，自动生成索引
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
-
 
 # HAYSTACK_SEARCH_RESULTS_PER_PAGE = config.ES_PER_PAGE
