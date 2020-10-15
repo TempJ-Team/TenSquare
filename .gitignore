@@ -127,30 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-.idea/dataSources.xml
-.idea/dataSources/02c43e01-bffb-45c6-8f82-b9baebfb0c16.xml
-.idea/dataSources/02c43e01-bffb-45c6-8f82-b9baebfb0c16/storage_v2/_src_/schema/information_schema.FNRwLQ.meta
-.idea/dataSources/76b65034-d2c7-4402-89b1-ad8feb26553a.xml
-.idea/dataSources/76b65034-d2c7-4402-89b1-ad8feb26553a/storage_v2/_src_/schema/information_schema.FNRwLQ.meta
-.idea/dataSources/d588fb89-cf24-4c93-92df-4cc9cc0e30e6.xml
-.idea/dataSources/d588fb89-cf24-4c93-92df-4cc9cc0e30e6/storage.xml
-.idea/deployment.xml
-.idea/encodings.xml
-.idea/inspectionProfiles/profiles_settings.xml
-.idea/misc.xml
-.idea/remote-mappings.xml
+.idea
 .idea/TenSquare.iml
-.idea/workspace.xml
-.idea/dataSources.xml
-.idea/dataSources/02c43e01-bffb-45c6-8f82-b9baebfb0c16.xml
-.idea/dataSources/02c43e01-bffb-45c6-8f82-b9baebfb0c16/storage_v2/_src_/schema/information_schema.FNRwLQ.meta
-.idea/dataSources/76b65034-d2c7-4402-89b1-ad8feb26553a.xml
-.idea/dataSources/76b65034-d2c7-4402-89b1-ad8feb26553a/storage_v2/_src_/schema/information_schema.FNRwLQ.meta
-.idea/dataSources/d588fb89-cf24-4c93-92df-4cc9cc0e30e6.xml
-.idea/dataSources/d588fb89-cf24-4c93-92df-4cc9cc0e30e6/storage.xml
-.idea/deployment.xml
-.idea/encodings.xml
-.idea/inspectionProfiles/profiles_settings.xml
 .idea/misc.xml
-.idea/remote-mappings.xml
-.idea/TenSquare.iml
+.idea/deployment.xml
