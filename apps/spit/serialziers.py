@@ -24,6 +24,8 @@ class SpitSimpleSerializer(serializers.ModelSerializer):
             'comment',
             'avatar',
             'parent',
+            'hasthumbup',
+            'collected',
         ]
 
 # class UserSerializer(serializers.ModelSerializer):
