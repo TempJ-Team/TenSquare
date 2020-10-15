@@ -7,13 +7,14 @@ import re
 from random import randint
 from django_redis import get_redis_connection
 
-from .serializers import UserModelSerializer, User, ChangePasswordModelSerializer, UserInfoSerializer
+from .serializers import UserModelSerializer, User, ChangePasswordModelSerializer, UserInfoSerializer, ChangeLabelModelSerializer
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import GenericAPIView,RetrieveUpdateAPIView
 from rest_framework_jwt.utils import jwt_encode_handler, jwt_payload_handler
 from rest_framework.generics import UpdateAPIView
 
+from apps.question.models import Label
 
 # 获取短信验证码
 class SendSmscodeView(APIView):
@@ -142,6 +143,33 @@ class FocusUserView(GenericAPIView):
                 'success': 'true',
                 'message': '取消关注用户成功'
             })
+
+
+# 修改用户标签
+class ChangeUserLabelView(GenericAPIView):
+    queryset = User.objects.all()
+    serializer_class = ChangeLabelModelSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+    def put(self, request):
+        labels_list = request.data['labels']
+        user = self.get_object()
+
+        user.labels.set(labels_list)
+
+        return Response({
+            'success': 'true',
+            'message': '标签修改成功'
+        })
+
+
+# 第三方登录--qq
+
+
+
 
 
 
