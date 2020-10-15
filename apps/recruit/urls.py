@@ -28,7 +28,7 @@ urlpatterns = [
     # 7.8 收藏职位
     path('recruits/<int:id>/collect/',views.Collection_RecruitView.as_view()),
     # 7.8.1
-    path('recruits/<int:id>/collect/',views.CancleCollection_RecruitView.as_view()),
+    path('recruits/<int:id>/cancelcollect/',views.CancleCollection_RecruitView.as_view()),
     # re_path(r'^authorizations/$',obtain_jwt_token),
 
 

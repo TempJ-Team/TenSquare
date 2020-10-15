@@ -86,7 +86,7 @@ class CancleCollection_RecruitView(GenericAPIView):
         return self.request.user
 
     def post(self, request, id, *args, **kwargs):
-        recruit = self.queryset().get(pk=id)
+        recruit = self.get_queryset().get(pk=id)
         user = self.get_object()
 
         recruit.users.remove(user)

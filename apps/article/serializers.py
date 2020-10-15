@@ -2,6 +2,8 @@ from rest_framework import serializers
 from .models import Channel, Article, Comment
 from apps.user.serializers import UserModelSerializer
 from rest_framework.relations import PrimaryKeyRelatedField, StringRelatedField
+from drf_haystack.serializers import HaystackSerializer
+from .search_indexes import ArticleIndex
 from haystack.views import search_view_factory
 
 
@@ -32,10 +34,42 @@ class ArticleSerializerForCreate(serializers.ModelSerializer):
         exclude = ('collected_users',)
 
 
+class CommentModelSerializer2(serializers.ModelSerializer):
+    subs = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
+class RecursiveCommentField(serializers.Serializer):
+
+    def to_representation(self, value):
+        serializer = self.parent.parent.__class__(value, context=self.context)
+        return serializer.data
+
+
+class CommentModelSerializer(serializers.ModelSerializer):
+    subs = RecursiveCommentField(many=True, read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
+
 class ArticleDetailSerializer(serializers.ModelSerializer):
+    comments = CommentModelSerializer(many=True, read_only=True)
+
     class Meta:
         model = Article
         fields = '__all__'
+
+class ArticleIndexSerializer(HaystackSerializer):
+    """
+    Article索引结果数据序列化器
+    """
+    class Meta:
+        index_classes = [ArticleIndex]
+        fields = ('text', 'id', 'title', 'content', 'createtime')
 
 
 class ArticleModelSerializer(serializers.ModelSerializer):
@@ -46,3 +80,5 @@ class ArticleModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = '__all__'
+
+

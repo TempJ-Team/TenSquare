@@ -7,8 +7,8 @@ from .pagintions import MyPage
 from ..question.models import Label
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import CreateAPIView
-
+from rest_framework.generics import CreateAPIView, GenericAPIView
+from drf_haystack.viewsets import HaystackViewSet
 
 class ChannelViews(ModelViewSet):
     queryset = Channel.objects.filter()
@@ -115,9 +115,17 @@ class ArticleDetailView(APIView):
         except Exception as e:
             return Response(status=404,
                             data={'errmsg': 'article_id错误'})
-        serializer = ArticleModelSerializer(instance=article)
+        serializer = ArticleDetailSerializer(instance=article)
         return Response(serializer.data)
 
+
+class ArticleSearchViewSet(HaystackViewSet):
+    """
+    Article搜索
+    """
+    index_models = [Article]
+    serializer_class = ArticleIndexSerializer
+    pagination_class = MyPage
 
 class SearchArticleView(ModelViewSet):
     queryset = Article.objects.all()
@@ -130,3 +138,35 @@ class SearchArticleView(ModelViewSet):
         # 查询内容
         _info = Article.objects.filter(title__contains=text)
         return _info
+
+
+# 评论文章
+class PubCommentView(GenericAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentModelSerializer2
+    lookup_field = 'id'
+    lookup_url_kwarg = lookup_field
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+    def post(self, request, id):
+        article = Article.objects.all().get(id=id)
+        user = self.request.user
+        _data = request.data
+        _data['user'] = user.id
+        _data['article'] = article.id
+
+        serializer = self.get_serializer(data=_data)
+        serializer.is_valid(raise_exception=True)
+        print(serializer.validated_data)
+
+        serializer.save()
+        article.comment_count += 1
+        article.save()
+
+        return Response({
+            'success': 'true',
+            'message': '评论发表成功'
+        })

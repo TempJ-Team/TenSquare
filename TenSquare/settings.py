@@ -282,7 +282,8 @@ HAYSTACK_CONNECTIONS = {
 
 DEFAULT_FILE_STORAGE = 'utils.fdfs.FastDFSStorage'
 
-# 当被检索的数据被修改了，haystack就会把新的数据写入es索引库
-# HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+# 当添加、修改、删除数据时，自动生成索引
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
 
 # HAYSTACK_SEARCH_RESULTS_PER_PAGE = config.ES_PER_PAGE
