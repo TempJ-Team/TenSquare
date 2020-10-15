@@ -13,7 +13,7 @@ class Spit(models.Model):
     visits = models.IntegerField(default=0)  # 浏览量
     thumbup = models.IntegerField(default=0)  # 点赞数
     comment = models.IntegerField(default=0)  # 回复数
-    avatar = models.CharField(max_length=255)  # 用户的头像
+    avatar = models.CharField(max_length=255, null=True)  # 用户的头像
     parent = models.ForeignKey("Spit", on_delete=models.CASCADE, null=True)  # 上级ID
     collected = models.BooleanField(default=False)  # 是否收藏
     hasthumbup = models.BooleanField(default=False)  # 是否点赞
