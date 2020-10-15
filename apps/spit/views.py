@@ -1,6 +1,6 @@
 from rest_framework import status
 from rest_framework.decorators import action
-from rest_framework.generics import RetrieveAPIView
+from rest_framework.generics import RetrieveAPIView,UpdateAPIView
 from rest_framework.response import Response
 
 from utils.paginations import MyPage
@@ -56,35 +56,50 @@ class SpitSimpleView(ModelViewSet):
             parent.comment +=1
             parent.save()
 
-    @action(methods=['put'],detail=True)
-    def collect(self,request,id):
-        spit = Spit.objects.get(pk=id)
-        if spit.collected == True:
-            spit.collected = False
-            spit.save()
-        else:
-            spit.collected = True
-            spit.save()
+
+class SpitCollectedView(UpdateAPIView):
+    queryset = Spit.objects.all()
+    serializer_class = SpitCollectedSerializer
+    def put(self, request, pk,*args, **kwargs):
+        # return self.partial_update(request, *args, **kwargs)
         return Response({
             'message':'ok',
-            'success':'spit.collected'
+            'success':True
         })
 
-    @action(methods=['put'], detail=True)
-    def updatehastumbup(self, request,id):
-        spit = Spit.objects.get(pk=id)
-        if spit.hasthumbup==True:
-            spit.hasthumbup = False
-            spit.thumbup += 1
-            spit.save()
-        else:
-            spit.hasthumbup = True
-            spit.thumbup -= 1
-            spit.save()
-        return Response({
-            'message':'ok',
-            'success':'spit.hasthumbup'
-        })
+
+
+    #
+    # @action(methods=['put'],detail=True)
+    # def collect(self,request,id):
+    #     spit = Spit.objects.get(pk=id)
+    #     if spit.collected == True:
+    #         spit.collected = False
+    #         spit.save()
+    #     else:
+    #         spit.collected = True
+    #         spit.save()
+    #     return Response({
+    #         'message':'ok',
+    #         'success':'spit.collected'
+    #     })
+
+    #
+    # @action(methods=['put'], detail=True)
+    # def updatehastumbup(self, request,id):
+    #     spit = Spit.objects.get(pk=id)
+    #     if spit.hasthumbup==True:
+    #         spit.hasthumbup = False
+    #         spit.thumbup += 1
+    #         spit.save()
+    #     else:
+    #         spit.hasthumbup = True
+    #         spit.thumbup -= 1
+    #         spit.save()
+    #     return Response({
+    #         'message':'ok',
+    #         'success':'spit.hasthumbup'
+    #     })
 
 
 
