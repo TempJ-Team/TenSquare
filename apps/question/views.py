@@ -96,14 +96,15 @@ class UsefulQuestionView(GenericAPIView):
     def put(self, request, pk, *args, **kwargs):
         conn = get_redis_connection('Q_collected')
         user = self.request.user
-        U_Q_collected = conn.get('Q_collected_%s' % user.id)
-        if pk not in U_Q_collected:
+        if not conn.get('Q_Useful_%s_%s' % (user.id, pk)):
             request_data = self.get_queryset().get(pk=pk)
             request_data.useful_count = request_data.useful_count + 1
             request_data.save()
+            conn.delete('Q_unUseful_%s_%s' % (user.id, pk))
+            conn.set('Q_Useful_%s_%s' % (user.id, pk),1)
             return Response({
                 'success': True,
-                'message': '有用问题+1'
+                'message': '不错的问题'
             })
         else:
             return Response({
@@ -120,13 +121,22 @@ class UnusefulQuestionView(GenericAPIView):
     def put(self, request, pk, *args, **kwargs):
         conn = get_redis_connection('Q_collected')
         user = self.request.user
-        request_data = self.get_queryset().get(pk=pk)
-        request_data.useful_count = request_data.useful_count - 1
-        request_data.save()
-        return Response({
-            'success': 'true',
-            'message': '有用问题-1'
-        })
+
+        if not conn.get('Q_unUseful_%s_%s' % (user.id, pk)):
+            request_data = self.get_queryset().get(pk=pk)
+            request_data.useful_count = request_data.useful_count - 1
+            request_data.save()
+            conn.delete('Q_Useful_%s_%s' % (user.id, pk))
+            conn.set('Q_unUseful_%s_%s' % (user.id, pk), 1)
+            return Response({
+                'success': 'true',
+                'message': '垃圾问题'
+            })
+        else:
+            return Response({
+                'success': False,
+                'message': '请勿重复踩别人'
+            })
 
 
 # 10
@@ -135,6 +145,12 @@ class ReplyView(ListCreateAPIView):
     authentication_classes = (JSONWebTokenAuthentication,)
     queryset = Reply.objects.all()
     serializer_class = ReplyQuestionSerializer
+
+    def perform_create(self, serializer):
+        instance = serializer.save()
+        problem = instance.problem
+        problem.reply += 1
+        problem.save()
 
     def create(self, request, *args, **kwargs):
         _data = request.data
@@ -155,14 +171,23 @@ class UsefulQView(GenericAPIView):
     def put(self, request, pk, *args, **kwargs):
         conn = get_redis_connection('A_collected')
         user = self.request.user
-        request_data = self.get_queryset().get(pk=pk)
-        request_data.useful_count += 1
-        request_data.save()
-        return Response({
-            'success': True,
-            'message': '有用问题+1'
-        })
 
+        if not conn.get('A_Useful_%s_%s' % (user.id, pk)):
+            request_data = self.get_queryset().get(pk=pk)
+            request_data.useful_count += 1
+            request_data.save()
+
+            conn.delete('A_unUseful_%s_%s' % (user.id, pk))
+            conn.set('A_Useful_%s_%s' % (user.id, pk), 1)
+            return Response({
+                'success': True,
+                'message': '点赞成功'
+            })
+        else:
+            return Response({
+                'success': False,
+                'message': '请勿重复点赞'
+            })
 
 # 12
 class UnusefulQView(GenericAPIView):
@@ -172,13 +197,23 @@ class UnusefulQView(GenericAPIView):
     def put(self, request, pk, *args, **kwargs):
         conn = get_redis_connection('A_collected')
         user = self.request.user
-        request_data = self.get_queryset().get(pk=pk)
-        request_data.useful_count -= 1
-        request_data.save()
-        return Response({
-            'success': True,
-            'message': '没用问题+1'
-        })
+
+        if not conn.get('A_unUseful_%s_%s' % (user.id, pk)):
+            request_data = self.get_queryset().get(pk=pk)
+            request_data.useful_count -= 1
+            request_data.save()
+
+            conn.delete('A_Useful_%s_%s' % (user.id, pk))
+            conn.set('A_unUseful_%s_%s' % (user.id, pk), 1)
+            return Response({
+                'success': 'true',
+                'message': '点踩成功'
+            })
+        else:
+            return Response({
+                'success': False,
+                'message': '请勿重复踩别人'
+            })
 
 
 # 13 关注标签
