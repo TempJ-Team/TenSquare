@@ -6,44 +6,48 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.generics import ListCreateAPIView, ListAPIView,GenericAPIView
+from rest_framework.generics import ListCreateAPIView, ListAPIView, GenericAPIView
 from rest_framework.viewsets import ModelViewSet
 from .serializers import *
 from django_redis import get_redis_connection
 
 
-
-#1,2
+# 1,2
 class LabelView(ModelViewSet):
     queryset = Label.objects.all()
     serializer_class = LabelAllModelSerializer
 
     @action(methods=['get'], detail=False)
-    def latest(self,request,*args, **kwargs):
+    def latest(self, request, *args, **kwargs):
         user = self.request.user
         label_name = user.labels.all()
-        serializer = self.get_serializer(instance =label_name,many = True)
+        serializer = self.get_serializer(instance=label_name, many=True)
         return Response(data=serializer.data)
 
-#3
+
+# 3
 class QuestionView(ListAPIView):
     queryset = Question.objects.all().order_by('-createtime')
     serializer_class = QusetionModelSerializer
+
 
 # 4
 class HotquestionView(ListAPIView):
     queryset = Question.objects.all().order_by('-reply')
     serializer_class = LabelHotModelSerializer
 
-#5
+
+# 5
 class WiatquestionView(ListAPIView):
     queryset = Question.objects.all().filter(reply=0).order_by('createtime')
     serializer_class = LabelHotModelSerializer
 
-#6
+
+# 6
 class ReleasequestionView(ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
     authentication_classes = (JSONWebTokenAuthentication,)
+
     def create(self, request, *args, **kwargs):
         _data = request.data
         _data['user_id'] = request.user.id
@@ -59,11 +63,12 @@ class ReleasequestionView(ListCreateAPIView):
     def get_queryset(self):
         return Question.objects.all()
 
-#7
+
+# 7
 class QuestiondetailsView(ModelViewSet):
     authentication_classes = (JSONWebTokenAuthentication,)
     queryset = Question.objects.all()
-    serializer_class =QuestionDetailsSerialzer
+    serializer_class = QuestionDetailsSerialzer
 
     def retrieve(self, request, pk):
         question = self.get_object()
@@ -82,7 +87,8 @@ class QuestiondetailsView(ModelViewSet):
         s = QuestionDetailsSerialzer(instance=question)
         return Response(s.data)
 
-#8
+
+# 8
 class UsefulQuestionView(GenericAPIView):
     queryset = Question.objects.all()
     serializer_class = QusetionModelSerializer
@@ -102,10 +108,11 @@ class UsefulQuestionView(GenericAPIView):
         else:
             return Response({
                 'success': False,
-                'message':'请勿重复点赞'
+                'message': '请勿重复点赞'
             })
 
-#9
+
+# 9
 class UnusefulQuestionView(GenericAPIView):
     queryset = Question.objects.all()
     serializer_class = QusetionModelSerializer
@@ -120,7 +127,9 @@ class UnusefulQuestionView(GenericAPIView):
             'success': 'true',
             'message': '有用问题-1'
         })
-#10
+
+
+# 10
 class ReplyView(ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
     authentication_classes = (JSONWebTokenAuthentication,)
@@ -137,7 +146,8 @@ class ReplyView(ListCreateAPIView):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-#11
+
+# 11
 class UsefulQView(GenericAPIView):
     queryset = Reply.objects.all()
     serializer_class = ReplySerializer
@@ -149,11 +159,12 @@ class UsefulQView(GenericAPIView):
         request_data.useful_count += 1
         request_data.save()
         return Response({
-                'success': True,
-                'message': '有用问题+1'
-            })
+            'success': True,
+            'message': '有用问题+1'
+        })
 
-#12
+
+# 12
 class UnusefulQView(GenericAPIView):
     queryset = Reply.objects.all()
     serializer_class = ReplySerializer
@@ -165,12 +176,12 @@ class UnusefulQView(GenericAPIView):
         request_data.useful_count -= 1
         request_data.save()
         return Response({
-                'success': True,
-                'message': '没用问题+1'
-            })
+            'success': True,
+            'message': '没用问题+1'
+        })
 
 
-#13 关注标签
+# 13 关注标签
 class AttentionstagsView(GenericAPIView):
     queryset = Label.objects.all()
     serializer_class = LabelAllModelSerializer
@@ -185,12 +196,12 @@ class AttentionstagsView(GenericAPIView):
         tags.users.add(user)
 
         return Response({
-            'success':True,
-            'message':'关注成功'
+            'success': True,
+            'message': '关注成功'
         })
 
 
-#14 取消关注标签
+# 14 取消关注标签
 class AttentiontagsView(GenericAPIView):
     queryset = Label.objects.all()
     serializer_class = LabelAllModelSerializer
@@ -204,11 +215,12 @@ class AttentiontagsView(GenericAPIView):
         tags.users.remove(user)
 
         return Response({
-            'success':'true',
-            'message':'取消关注成功'
+            'success': 'true',
+            'message': '取消关注成功'
         })
 
-#15
+
+# 15
 class TagsView(ModelViewSet):
     queryset = Label.objects.all()
     serializer_class = TagsDetailsSerializer
@@ -218,28 +230,11 @@ class TagsView(ModelViewSet):
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
-#16
+
+# 16
 class LabelFullView(ListAPIView):
 
     def get(self, request):
         labels = Label.objects.all()
         serializer = LabelAllModelSerializer(labels, many=True)
         return Response(serializer.data)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

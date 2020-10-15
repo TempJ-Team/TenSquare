@@ -280,6 +280,8 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
+DEFAULT_FILE_STORAGE = 'utils.fdfs.FastDFSStorage'
+
 # 当被检索的数据被修改了，haystack就会把新的数据写入es索引库
 # HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
