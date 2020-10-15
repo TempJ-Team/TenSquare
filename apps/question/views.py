@@ -26,21 +26,61 @@ class LabelView(ModelViewSet):
 
 
 # 3
-class QuestionView(ListAPIView):
-    queryset = Question.objects.all().order_by('-createtime')
+#3
+class QuestionView(ModelViewSet):
     serializer_class = QusetionModelSerializer
+    def list(self, request, id):
+        if id == '-1':
+            queryset = Question.objects.all().order_by('-createtime')
+        else:
+            label = Label.objects.get(pk = id)
+            queryset = label.questions.all().order_by('-createtime')
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 # 4
-class HotquestionView(ListAPIView):
-    queryset = Question.objects.all().order_by('-reply')
-    serializer_class = LabelHotModelSerializer
+class HotquestionView(ModelViewSet):
+    serializer_class = QusetionModelSerializer
+    def list(self, request, id):
+        if id == '-1':
+            queryset = Question.objects.all().order_by('-reply')
+        else:
+            label = Label.objects.get(pk = id)
+            queryset = label.questions.all().order_by('-reply').order_by('-createtime')
 
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
 
-# 5
-class WiatquestionView(ListAPIView):
-    queryset = Question.objects.all().filter(reply=0).order_by('createtime')
-    serializer_class = LabelHotModelSerializer
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+#5
+class WiatquestionView(ModelViewSet):
+    serializer_class = QusetionModelSerializer
+
+    def list(self, request, id):
+        if id == '-1':
+            queryset = Question.objects.all().filter(reply=0)
+        else:
+            label = Label.objects.get(pk=id)
+            queryset = label.questions.all().filter(reply=0).order_by('createtime')
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 # 6
