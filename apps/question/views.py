@@ -10,8 +10,8 @@ from rest_framework.generics import ListCreateAPIView, ListAPIView, UpdateAPIVie
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
-from question.models import *
-from question.serializers import *
+from .models import *
+from .serializers import *
 
 
 

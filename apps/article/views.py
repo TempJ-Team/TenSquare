@@ -6,11 +6,13 @@ from .serializers import *
 from .pagintions import MyPage
 from ..question.models import Label
 from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.generics import CreateAPIView
 
 
 class ChannelViews(ModelViewSet):
     queryset = Channel.objects.filter()
-    serializer_class = ChannelModelSerializer
+    serializer_class = ChannelsSerializers
     pagination_class = MyPage
 
 
@@ -39,7 +41,6 @@ class ArticleViewSet(ModelViewSet):
 
         queryset = self.queryset
         if isinstance(queryset, QuerySet):
-            # Ensure queryset is re-evaluated on each request.
             queryset = queryset.all()
         return queryset
 
@@ -77,8 +78,7 @@ class ArticleViewSet(ModelViewSet):
             s = ArticleSerializerForList(instance=articles, many=True)
             return Response(s.data)
 
-    # def Article_Collect(self, request, pk):
-    #     try:
-    #         use = request.use
-    #     except Exception:
-    #         use = None
+
+
+
+

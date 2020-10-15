@@ -1,12 +1,12 @@
 from rest_framework import serializers
-from .models import Channel, Article
-from ..user.serializers import UserModelSerializer
+from .models import Channel, Article, Comment
+from apps.user.serializers import UserModelSerializer
+from rest_framework.relations import PrimaryKeyRelatedField, StringRelatedField
 
 
-class ChannelModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Channel
-        fields = ['id', 'name']
+class ChannelsSerializers(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    name = serializers.StringRelatedField()
 
 
 class LabelsSerializer(serializers.Serializer):
@@ -29,3 +29,11 @@ class ArticleSerializerForCreate(serializers.ModelSerializer):
     class Meta:
         model = Article
         exclude = ('collected_users',)
+
+
+class ArticleDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        fields = '__all__'
+
+
