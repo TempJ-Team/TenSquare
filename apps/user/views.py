@@ -11,7 +11,7 @@ from .serializers import UserModelSerializer, User, ChangePasswordModelSerialize
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import GenericAPIView,RetrieveUpdateAPIView
-from rest_framework_jwt.utils import jwt_encode_handler, jwt_payload_handler
+from rest_framework_jwt.serializers import jwt_encode_handler, jwt_payload_handler
 from rest_framework.generics import UpdateAPIView
 
 

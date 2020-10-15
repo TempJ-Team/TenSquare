@@ -34,6 +34,7 @@ class SpitSimpleView(ModelViewSet):
     def create(self, request, *args, **kwargs):
         user = self.request.user
         _data = request.data
+
         _data['userid'] = user.id
         _data['nickname'] = user.nickname
         _data['avatar'] = user.avatar
