@@ -26,7 +26,7 @@ class UserInfoSerializer(serializers.ModelSerializer):
     '''用户信息'''
     username = serializers.CharField(read_only=True)
 
-    # TODO：这里可能有些不需要 many=True后续再改
+    # TODO：这里可能有些不需要 read_only=True后续再改
     # ==> question
     questions = QuestionsModelSerializer(many=True, read_only=True)
     replies = ReplySerializerForList(many=True, read_only=True)
@@ -59,6 +59,16 @@ class UserInfoSerializer(serializers.ModelSerializer):
             'collected_articles',
             'enterpises',
             'recruits',
+        ]
+
+# 修改用户标签
+class ChangeLabelModelSerializer(serializers.ModelSerializer):
+    labels = LablesModelSerializer(many=True)
+
+    class Meta:
+        model = User
+        fields = [
+            'labels'
         ]
 
 

@@ -17,4 +17,6 @@ urlpatterns = [
     path('user/password/', views.ChangePasswordView.as_view()),
     # 关注/取消关注
     re_path(r'^users/like/?P<id>\d+/$', views.FocusUserView.as_view()),
+    # 修改个人标签
+    path('user/label/', views.ChangeUserLabelView.as_view()),
 ]
