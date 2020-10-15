@@ -37,8 +37,17 @@ class SpitCollectedSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'collected_users',
+            'collected',
         ]
 
+class SpithasthumbupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Spit
+        fields = [
+            'id',
+            'hasthumbup_users',
+            'hasthumbup',
+        ]
     # def create(self, validated_data):
     #     #1、新增一个 吐槽，parent设置为路径参数id的吐槽
     #     #2、根据路径参数id获取被吐槽的对象，把coment+1
