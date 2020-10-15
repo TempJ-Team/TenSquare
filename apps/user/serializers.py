@@ -12,7 +12,6 @@ class UserModelSerializer(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 
-
     # 密码要加密
     def validate(self, attrs):
         raw_password = attrs.pop('password')

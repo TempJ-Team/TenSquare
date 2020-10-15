@@ -79,6 +79,54 @@ class ArticleViewSet(ModelViewSet):
             return Response(s.data)
 
 
+class ArticleCollectView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, id):
+        user = request.user
+        try:
+
+            article = Article.objects.get(id=id)
+        except Exception as e:
+            return Response(status=404,
+                            data={
+                                'errmsg': 'article_id错误'
+                            })
+        # 判断是否收藏
+        collected_users = article.collected_users.all()
+        if user in collected_users:
+            article.collected_users.remove(user)
+        else:
+            article.collected_users.add(user)
+        # 返回响应
+        return Response({
+            'message': "ok",
+            'success': True
+        })
 
 
+# 文章详情
+class ArticleDetailView(APIView):
 
+    def get(self, request, id):
+        try:
+            article = Article.objects.get(id=id)
+
+        except Exception as e:
+            return Response(status=404,
+                            data={'errmsg': 'article_id错误'})
+        serializer = ArticleModelSerializer(instance=article)
+        return Response(serializer.data)
+
+
+class SearchArticleView(ModelViewSet):
+    queryset = Article.objects.all()
+    serializer_class = ArticleModelSerializer
+    pagination_class = MyPage
+
+    def get_queryset(self):
+        # 获取搜索内容
+        text = self.request.query_params.get('text')
+        # 查询内容
+        _info = Article.objects.filter(title__contains=text)
+        return _info
