@@ -2,24 +2,10 @@
 <project version="4">
   <component name="PublishConfigData" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
-      <paths name="python@192.168.203.153:22 password">
+      <paths name="root@192.168.203.153:22 key">
         <serverdata>
           <mappings>
-            <mapping deploy="/home/python/tensquare" local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="python@192.168.203.153:22 password (1)">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="root@192.168.203.153:22 password">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/tmp/pycharm_project_772" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
