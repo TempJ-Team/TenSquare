@@ -79,7 +79,7 @@ class UserView(GenericAPIView):
 
         return Response({
             'id': user.id,
-            'username': user.nickname,
+            'username': user.username,
             'mobile': user.mobile,
             'avatar': user.avatar,
             'token': token
