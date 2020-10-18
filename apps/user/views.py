@@ -190,7 +190,7 @@ class WeChatLoginViewSet(APIView):
 
         openid = response['openid'] if 'openid' in response else None
         access_token = response["access_token"] if 'access_token' in response else None
-        # session_key = response['session_key'] if 'session_key' in response else None
+        session_key = response['session_key'] if 'session_key' in response else None
 
         try:
             _data = OAuthWeixinUser.objects.get(openid=openid)

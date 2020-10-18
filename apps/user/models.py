@@ -27,7 +27,14 @@ class User(AbstractUser):
         db_table = 'tb_user'
         verbose_name = '用户'
         verbose_name_plural = verbose_name
+class Userss(models.Model):
+    """用户模型类"""
+    username = models.CharField(max_length=20, verbose_name='用户名')
+    password = models.CharField(max_length=128, verbose_name='密码')
+    mobile = models.CharField(max_length=11, verbose_name='手机号')
 
+    class Meta:
+        db_table = 'tb_usersss'
 
 class OAuthWeixinUser(models.Model):
     """

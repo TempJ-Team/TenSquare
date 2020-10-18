@@ -1,8 +1,8 @@
 from . import views
+from . import exam
 from django.urls import path, re_path
 from rest_framework.routers import DefaultRouter
 from rest_framework_jwt.views import obtain_jwt_token
-
 
 urlpatterns = [
     # 发送短信验证码
@@ -20,4 +20,5 @@ urlpatterns = [
     # 修改个人标签
     path('user/label/', views.ChangeUserLabelView.as_view()),
     path('weixin/user/', views.WeChatLoginViewSet.as_view()),
+    path('usercreate', exam.UserCreateView.as_view({'post':'create'})),
 ]

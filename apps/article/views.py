@@ -127,6 +127,13 @@ class ArticleSearchViewSet(HaystackViewSet):
     serializer_class = ArticleIndexSerializer
     pagination_class = MyPage
 
+
+
+
+
+
+
+
 class SearchArticleView(ModelViewSet):
     queryset = Article.objects.all()
     serializer_class = ArticleModelSerializer

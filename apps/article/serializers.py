@@ -42,9 +42,8 @@ class CommentModelSerializer2(serializers.ModelSerializer):
         model = Comment
         fields = '__all__'
 
-
+# 递归实现无限层级回复
 class RecursiveCommentField(serializers.Serializer):
-
     def to_representation(self, value):
         serializer = self.parent.parent.__class__(value, context=self.context)
         return serializer.data
@@ -62,7 +61,7 @@ class CommentModelSerializer(serializers.ModelSerializer):
 class ArticleDetailSerializer(serializers.ModelSerializer):
     comments = CommentModelSerializer(many=True, read_only=True)
     user = UserModelSerializer(read_only=True)
-    
+
     class Meta:
         model = Article
         fields = '__all__'
